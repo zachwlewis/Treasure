@@ -1,0 +1,22 @@
+﻿<Window x:Name="TreasureMainWindow" x:Class="Treasure.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Treasure" Height="350" Width="525" Topmost="True" Loaded="TreasureMainWindow_Loaded" AllowDrop="True" DragLeave="TreasureMainWindow_DragLeave" DragEnter="TreasureMainWindow_DragEnter">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Menu Margin="0" VerticalAlignment="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+			<MenuItem Header="File" Margin="0" Padding="6,0,6,2">
+				<Separator Margin="0"/>
+				<MenuItem Header="Exit" Margin="0" Padding="6,0,6,2"/>
+			</MenuItem>
+			<MenuItem Header="Options" Margin="0" Padding="6,0,6,2"/>
+		</Menu>
+		<TreeView x:Name="DirectoryList" Margin="5" Grid.Row="2"/>
+		<Label x:Name="DropTarget" Content="Drop a folder here." Margin="5" Grid.Row="1" Height="40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="#FF7296E0" Background="#7FA5C2FF" BorderThickness="1" IsManipulationEnabled="True" DragLeave="DropTarget_DragLeave" AllowDrop="True" Drop="DropTarget_Drop" DragEnter="DropTarget_DragEnter"/>
+
+	</Grid>
+</Window>
