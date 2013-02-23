@@ -41,44 +41,12 @@ namespace Treasure
 			root.Header = targetDirectory;
 			root.Tag = targetDirectory;
 			root.FontWeight = FontWeights.Bold;
+
+			root.Items.Add(_dummyNode);
+			root.Expanded += new RoutedEventHandler(folder_Expanded);
+			root.ItemContainerStyle = DirectoryList.Resources["CheckableTreeViewItemStyle"] as Style;
 			DirectoryList.Items.Add(root);
 			root.IsExpanded = true;
-
-			foreach (string s in Directory.GetDirectories(targetDirectory))
-			{
-				TreeViewItem item = new TreeViewItem();
-				item.Header = s.Substring(s.LastIndexOf("\\") + 1); ;
-				item.Tag = s;
-				item.FontWeight = FontWeights.Normal;
-				
-				// Is this item hidden?
-				if (item.Header.ToString().StartsWith(".", false, System.Globalization.CultureInfo.CurrentCulture))
-				{
-					item.FontStyle = FontStyles.Italic;
-					item.Foreground = new SolidColorBrush(Color.FromRgb(164, 195, 255));
-				}
-
-				item.Items.Add(_dummyNode);
-				item.Expanded += new RoutedEventHandler(folder_Expanded);
-				root.Items.Add(item);
-			}
-
-			foreach (string s in Directory.GetFiles(targetDirectory))
-			{
-				TreeViewItem item = new TreeViewItem();
-				item.Header = s.Substring(s.LastIndexOf("\\") + 1);
-				item.Tag = s;
-				item.FontWeight = FontWeights.Normal;
-				// Is this item hidden?
-				if (item.Header.ToString().StartsWith(".", false, System.Globalization.CultureInfo.CurrentCulture))
-				{
-					item.FontStyle = FontStyles.Italic;
-					item.Foreground = new SolidColorBrush(Color.FromRgb(164, 195, 255));
-				}
-				root.Items.Add(item);
-			}
-
-			
 		}
 
 		private void folder_Expanded(object sender, RoutedEventArgs e)
@@ -87,13 +55,13 @@ namespace Treasure
 			if (item.Items.Count == 1 && item.Items[0] == _dummyNode)
 			{
 				item.Items.Clear();
-
 				try
 				{
 					// Add all directories first.
 					foreach (string s in Directory.GetDirectories(item.Tag.ToString()))
 					{
 						TreeViewItem subitem = new TreeViewItem();
+						subitem.ItemContainerStyle = DirectoryList.Resources["CheckableTreeViewItemStyle"] as Style;
 						subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
 						subitem.Tag = s;
 						subitem.FontWeight = FontWeights.Normal;
@@ -114,6 +82,7 @@ namespace Treasure
 					foreach (string s in Directory.GetFiles(item.Tag.ToString()))
 					{
 						TreeViewItem subitem = new TreeViewItem();
+						subitem.ItemContainerStyle = DirectoryList.Resources["CheckableTreeViewItemStyle"] as Style;
 						subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
 						subitem.Tag = s;
 						subitem.FontWeight = FontWeights.Normal;
@@ -180,6 +149,16 @@ namespace Treasure
 		private void TreasureMainWindow_DragEnter(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop)) { DropTarget.Visibility = Visibility.Visible; }
+		}
+
+		private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			Application.Current.Shutdown();
+		}
+
+		private void DirectoryList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+
 		}
 	}
 }
